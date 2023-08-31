@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <CNavigation />
-        {children}
+        <main className="container mx-auto my-5">{children}</main>
       </body>
     </html>
   );
