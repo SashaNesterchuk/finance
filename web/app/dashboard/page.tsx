@@ -1,60 +1,69 @@
 "use client";
-import { useState, useMemo } from "react";
-import Item from "../components/item";
-import CNumber from "../components/inputs/CNumber";
-import CChart from "../components/charts/CChart";
-import { TemplateItem } from "../module";
-import CDate from "../components/inputs/CDate";
-import CBudgetType from "../components/CBudgetType";
-import CDropdown, { Item as DropdownItem } from "../components/CDropdown";
-import { budgets } from "../mock/budgets";
+import { useState } from "react";
+import { TbCurrencyZloty } from "react-icons/tb";
+import { BiPlus } from "react-icons/bi";
+import MonthCarousel from "../components/monthCarousel/MonthCarousel";
+import Budget from "../budget/Budget";
+import CButton from "../components/CButton";
+import CModal from "../components/CModal";
+import TransactionModal from "../budget/TransactionModal";
+import TransactionItem from "../budget/TransactionItem";
 
 export default function Dashboard() {
-  const [items, setItems] = useState<Array<TemplateItem>>([]);
-  const [sum, setSum] = useState<number | undefined>();
-  const [dropDownValues, setDropDownValues] = useState<Array<DropdownItem>>([]);
-
-  const renderItem = () => {
-    return items.map((item: TemplateItem) => (
-      <Item key={item.name} item={item} disabled={true} />
-    ));
-  };
-
-  const handleSave = (tmp: TemplateItem) => {
-    setItems((items) => [...items, tmp as TemplateItem]);
-  };
-
-  const finalSum = useMemo(
-    () => (sum || 0) - items.reduce((acc, it) => acc + it.count, 0),
-    [items, sum]
-  );
-
-  const handleDropDownClick = (item: Array<DropdownItem>) => {
-    setDropDownValues(item);
-  };
+  const [isActive, setIsActive] = useState(false);
 
   return (
-    <div>
-      {renderItem()}
-      <CDate value="asdf" onChange={() => {}} />
-      <CDropdown
-        items={budgets}
-        values={dropDownValues}
-        handleClick={handleDropDownClick}
-      />
-      <div className="flex">
-        <CNumber
-          label="All"
-          value={sum || ""}
-          onChange={(e) => setSum(Number(e.target.value))}
-        />
+    <div className="dashboard">
+      {/* Move to layout make global */}
+      <CModal isActive={isActive} handleClose={() => setIsActive(false)}>
+        <TransactionModal />
+      </CModal>
+      <div className="fixed bottom-10 right-10">
+        <CButton
+          onClick={() => {
+            setIsActive(true);
+          }}
+          circle
+        >
+          <BiPlus />
+        </CButton>
       </div>
-      {/* <CChart /> */}
+      <section className="flex justify-center">
+        <MonthCarousel />
+      </section>
 
-      <div className="flex">
-        <div>sum</div>
-        <div>{finalSum}</div>
-      </div>
+      <section className="mt-20">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="p-2 border-2 border-sky-300 rounded-md">
+            <div className="text-center mb-4 text-2xl font-bold">
+              Budget on August
+            </div>
+
+            <Budget />
+
+            <div className="flex mt-6 justify-between font-bold text-lg px-2">
+              <div className="text-red-500 flex items-center pl-2">
+                5000
+                <TbCurrencyZloty />
+              </div>
+              <div className="flex items-center">
+                AMOUNT: 4000
+                <TbCurrencyZloty />
+              </div>
+            </div>
+
+            <div className="pl-4 mt-2 text-green-500 flex items-center font-bold text-lg">
+              5000
+              <TbCurrencyZloty />
+              <span className="text-base font-normal">- Extra</span>
+            </div>
+          </div>
+
+          <div className="col-span-2">
+            <Budget />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -15,3 +15,8 @@ export interface BudgetType {
   name: string;
   icon: FunctionComponent;
 }
+
+export interface Budget {
+  amount: number;
+  budgetType: BudgetType;
+}

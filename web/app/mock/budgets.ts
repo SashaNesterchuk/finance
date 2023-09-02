@@ -17,9 +17,9 @@ import {
   MdWork,
 } from "react-icons/md";
 import { BsFillAirplaneFill } from "react-icons/bs";
-import { BudgetType } from "../module";
+import { Budget, BudgetType } from "../module";
 
-export const budgets: Array<BudgetType> = [
+export const budgetTypes: Array<BudgetType> = [
   {
     name: "Beauty",
     icon: BiSolidSpa,
@@ -87,5 +87,35 @@ export const budgets: Array<BudgetType> = [
   {
     name: "Work",
     icon: MdWork,
+  },
+];
+
+export const budgets: Array<Budget> = [
+  {
+    amount: 100,
+    budgetType: budgetTypes[1],
+  },
+  {
+    amount: 800,
+    budgetType: budgetTypes[8],
+  },
+  {
+    amount: 8000,
+    budgetType: budgetTypes[5],
+  },
+];
+
+export const transactions: Array<Budget> = [
+  {
+    amount: 100,
+    budgetType: budgetTypes[1],
+  },
+  {
+    amount: 800,
+    budgetType: budgetTypes[8],
+  },
+  {
+    amount: 8000,
+    budgetType: budgetTypes[5],
   },
 ];

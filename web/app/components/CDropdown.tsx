@@ -1,6 +1,7 @@
 import React, { useState, FunctionComponent, SyntheticEvent } from "react";
 import { IoClose } from "react-icons/io5";
 import { useOutsideClick } from "../use/useOutsideClick";
+import { inputClasses } from "./inputs/utils";
 
 export interface Item {
   name: string;
@@ -11,6 +12,7 @@ interface Props {
   values: Array<Item>;
   items: Array<Item>;
   handleClick: Function;
+  single?: boolean;
 }
 
 export default function CDropdown(props: Props) {
@@ -22,6 +24,10 @@ export default function CDropdown(props: Props) {
   };
 
   const handleClickItem = (item: Item) => {
+    if (props.single) {
+      props.handleClick([item]);
+      return;
+    }
     props.handleClick([...props.values, item]);
   };
 
@@ -38,16 +44,8 @@ export default function CDropdown(props: Props) {
   };
 
   return (
-    <div>
-      <div
-        ref={ref}
-        className="h-14 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
-          focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
-          disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
-          invalid:border-pink-500 invalid:text-pink-600
-          focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
-        onClick={handleClickInput}
-      >
+    <div className="relative">
+      <div ref={ref} className={inputClasses} onClick={handleClickInput}>
         <div className="flex flex-wrap gap-3">
           {props.values.map((value: Item) => (
             <div
@@ -68,11 +66,11 @@ export default function CDropdown(props: Props) {
       </div>
       {isActive && (
         <div
-          className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+          className="absolute mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
         focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
         disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
         invalid:border-pink-500 invalid:text-pink-600
-        focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+        focus:invalid:border-pink-500 focus:invalid:ring-pink-500 overflow-y-auto h-72 z-10"
         >
           {correctItems().map((el: Item) => (
             <div
