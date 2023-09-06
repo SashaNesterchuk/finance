@@ -1,15 +1,12 @@
 import { FunctionComponent } from "react";
 
-export interface TemplateItem {
-  name: string;
-  count: number;
-}
-
 export interface Template {
   id: string;
   name: string;
-  items: Array<TemplateItem>;
+  items: Array<Budget>;
 }
+
+export type CreateTemplate = Omit<Template, "id">;
 
 export interface BudgetType {
   name: string;

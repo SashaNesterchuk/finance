@@ -1,10 +1,10 @@
 "use client";
-import { ChangeEventHandler } from "react";
+import { ChangeEvent } from "react";
 import { inputClasses } from "./utils";
 
 export interface Props {
   value: number | string;
-  onChange: ChangeEventHandler;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label?: string;
   disabled?: boolean;
   error?: string;
@@ -12,6 +12,9 @@ export interface Props {
 
 export default function CNumber(props: Props) {
   const { label, error, disabled, value, onChange } = props;
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    props.onChange(e);
+  };
   return (
     <label className="block">
       {label && (
@@ -24,7 +27,7 @@ export default function CNumber(props: Props) {
         value={value}
         disabled={disabled}
         className={inputClasses}
-        onChange={onChange}
+        onChange={handleChange}
       />
       {error && (
         <p className="mt-2 peer-invalid:visible text-pink-600 text-sm">

@@ -7,7 +7,6 @@ import Budget from "../budget/Budget";
 import CButton from "../components/CButton";
 import CModal from "../components/CModal";
 import TransactionModal from "../budget/TransactionModal";
-import TransactionItem from "../budget/TransactionItem";
 
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(false);

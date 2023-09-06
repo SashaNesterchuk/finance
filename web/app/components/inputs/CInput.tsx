@@ -1,13 +1,14 @@
 "use client";
-import { ChangeEventHandler } from "react";
+import { ChangeEvent, ChangeEventHandler } from "react";
 import { inputClasses } from "./utils";
 
 export interface Props {
   value: string;
-  onChange: ChangeEventHandler;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label?: string;
   disabled?: boolean;
   error?: string;
+  placeholder?: string;
 }
 
 export default function CInput(props: Props) {
@@ -25,6 +26,7 @@ export default function CInput(props: Props) {
         disabled={disabled}
         className={inputClasses}
         onChange={onChange}
+        placeholder={props.placeholder}
       />
       {error && (
         <p className="mt-2 peer-invalid:visible text-pink-600 text-sm">

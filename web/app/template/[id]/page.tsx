@@ -1,5 +1,7 @@
+"use client";
 import Item from "@/app/components/item";
-import { templates } from "@/app/mock/template";
+import { templates as mockTemplates } from "@/app/mock/template";
+import { useState } from "react";
 
 interface Props {
   params: {
@@ -8,12 +10,33 @@ interface Props {
 }
 
 export default function TemplateId(props: Props) {
-  const template = templates.find((el) => el.id === props.params.id);
+  const [template, setTemplate] = useState(
+    mockTemplates.find((el) => el.id === props.params.id)
+  );
+
+  const handleCloseItem = (index: number) => {
+    setTemplate((current) =>
+      current
+        ? {
+            ...current,
+            items: current.items.filter((el, i) => i !== index),
+          }
+        : undefined
+    );
+  };
+
+  const handleTemplateChange = () => {};
+
   return (
     <div>
       <div>{template?.name}</div>
-      {template?.items.map((el) => (
-        <Item key={el.name} item={el} />
+      {template?.items.map((el, index) => (
+        <Item
+          key={el.budgetType.name}
+          item={el}
+          onTemplateChange={handleTemplateChange}
+          handleClose={() => handleCloseItem(index)}
+        />
       ))}
     </div>
   );

@@ -16,6 +16,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      translate: {
+        "m-50": "-50%",
+      },
       minWidth: {
         0: "0px",
         0.5: "0.125rem" /* 2px */,

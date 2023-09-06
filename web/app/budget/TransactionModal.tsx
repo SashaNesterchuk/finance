@@ -18,7 +18,7 @@ export default function TransactionModal() {
               <CDropdown
                 single
                 values={transaction ? [transaction] : []}
-                handleClick={(tr: Array<Item>) => {
+                onClick={(tr: Array<Item>) => {
                   setTransaction(tr[0]);
                 }}
                 items={budgetTypes}

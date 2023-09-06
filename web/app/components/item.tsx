@@ -1,58 +1,55 @@
 "use client";
-import { useState, ChangeEvent, useEffect } from "react";
-import { CInput, CNumber } from "./inputs";
-import CButton from "./CButton";
-import { TemplateItem } from "../module";
+import { useState, useEffect, ChangeEventHandler, ChangeEvent } from "react";
+import { CNumber } from "./inputs";
+import { Budget, BudgetType } from "../module";
+import CIconClose from "./CIconClose";
+import CDropdown, { Item } from "./CDropdown";
+import { budgetTypes } from "../mock/budgets";
 
 interface Props {
-  item: TemplateItem;
-  disabled?: boolean;
-  handleSave?: Function;
+  item?: Partial<Budget>;
+  showClose?: boolean;
+  onTemplateChange: (value: Partial<Budget>) => void;
+  handleClose?: Function;
 }
 
 export default function Item(props: Props) {
-  const [tmp, setTmp] = useState<Partial<TemplateItem>>({});
+  const handleAmount = (event: ChangeEvent<HTMLInputElement>) => {
+    const newTransaction = {
+      ...props.item,
+      amount: Number(event.target.value),
+    };
 
-  useEffect(() => {
-    if (props.item) {
-      setTmp(props.item);
-    }
-  }, [props.item, setTmp]);
-
-  const nameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setTmp({ ...tmp, name: e.target.value });
+    props.onTemplateChange(newTransaction);
   };
 
-  const countChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setTmp({ ...tmp, count: Number(e.target.value) });
+  const handleClose = () => {
+    if (!props.handleClose) {
+      return;
+    }
+
+    props.handleClose();
   };
 
-  const handleSave = () => {
-    if (tmp?.name && tmp?.count) {
-      if (props.handleSave) {
-        props.handleSave(tmp);
-      }
-      setTmp({});
-    }
+  const handleDropdownClick = (value: Array<Item>) => {
+    const newTransaction = {
+      ...props.item,
+      budgetType: value[0] as BudgetType,
+    };
+    props.onTemplateChange(newTransaction);
   };
 
   return (
-    <div className="flex">
-      <CInput
-        value={tmp.name || ""}
-        disabled={props.disabled}
-        onChange={nameChangeHandler}
-        label="name"
+    <div className="flex gap-4 items-center">
+      <CDropdown
+        single
+        values={props.item?.budgetType ? [props.item.budgetType] : []}
+        onClick={handleDropdownClick}
+        items={budgetTypes}
       />
+      <CNumber value={props.item?.amount || ""} onChange={handleAmount} />
 
-      <CNumber
-        value={tmp.count || ""}
-        disabled={props.disabled}
-        onChange={countChangeHandler}
-        label="count"
-      />
-
-      {!props.disabled && <CButton onClick={handleSave}>Save</CButton>}
+      {props.showClose && <CIconClose onClick={handleClose} />}
     </div>
   );
 }

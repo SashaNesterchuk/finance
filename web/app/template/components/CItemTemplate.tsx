@@ -6,13 +6,14 @@ interface Props {
   id?: string;
   name: string;
   labels?: Array<string>;
+  route: string;
 }
 
 export default function CItemTemplate(props: Props) {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/template/${props.id}`);
+    router.push(props.route);
   };
 
   return (

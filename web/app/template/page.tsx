@@ -10,10 +10,10 @@ export default function Template() {
           key={template.id}
           id={template.id}
           name={template.name}
-          labels={template.items.map((el) => el.name)}
+          route={`template/${template.id}`}
         />
       ))}
-      <CItemTemplate name="Create new" />
+      <CItemTemplate name="Create new" route="template/create" />
     </div>
   );
 }

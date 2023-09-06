@@ -11,7 +11,7 @@ export interface Item {
 interface Props {
   values: Array<Item>;
   items: Array<Item>;
-  handleClick: Function;
+  onClick: (value: Array<Item>) => void;
   single?: boolean;
 }
 
@@ -25,10 +25,10 @@ export default function CDropdown(props: Props) {
 
   const handleClickItem = (item: Item) => {
     if (props.single) {
-      props.handleClick([item]);
+      props.onClick([item]);
       return;
     }
-    props.handleClick([...props.values, item]);
+    props.onClick([...props.values, item]);
   };
 
   const correctItems = () => {
@@ -40,7 +40,7 @@ export default function CDropdown(props: Props) {
   const handleClickClose = (e: SyntheticEvent, item: Item) => {
     e.stopPropagation();
     e.preventDefault();
-    props.handleClick(props.values.filter((el) => el.name !== item.name));
+    props.onClick(props.values.filter((el) => el.name !== item.name));
   };
 
   return (
