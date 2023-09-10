@@ -17,3 +17,10 @@ export interface Budget {
   amount: number;
   budgetType: BudgetType;
 }
+
+export interface Transaction {
+  date: Date;
+  amount: string;
+  currency: "PLN";
+  transactionPlace: string;
+}

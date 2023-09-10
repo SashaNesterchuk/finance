@@ -1,7 +1,7 @@
 /* Instruments */
 import { createAppAsyncThunk } from "@/lib/redux/createAppAsyncThunk";
 import { fetchIdentityCount } from "./fetchIdentityCount";
-import { selectCount } from "./selectors";
+import { selectTemplate } from "./selectors";
 import { templateSlice } from "./templateSlice";
 import type { ReduxThunkAction } from "@/lib/redux";
 
@@ -25,7 +25,7 @@ export const incrementAsync = createAppAsyncThunk(
 export const incrementIfOddAsync =
   (amount: number): ReduxThunkAction =>
   (dispatch, getState) => {
-    const currentValue = selectCount(getState());
+    const currentValue = selectTemplate(getState());
 
     // if (currentValue % 2 === 1) {
     // dispatch(templateSlice.actions.incrementByAmount(amount));

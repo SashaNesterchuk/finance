@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbCurrencyZloty } from "react-icons/tb";
 import { BiPlus } from "react-icons/bi";
 import MonthCarousel from "../components/monthCarousel/MonthCarousel";
@@ -7,9 +7,23 @@ import Budget from "../budget/Budget";
 import CButton from "../components/CButton";
 import CModal from "../components/CModal";
 import TransactionModal from "../budget/TransactionModal";
+import {
+  selectTransactions,
+  useDispatch,
+  useSelector,
+  fetchTransactionsAsync,
+} from "@/lib/redux";
+import TransactionItem from "../transaction/components/TransactionItem";
+import TransactionList from "../transaction/components/TransactionList";
 
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(false);
+  const dispatch = useDispatch();
+  const transactions = useSelector(selectTransactions);
+
+  useEffect(() => {
+    dispatch(fetchTransactionsAsync());
+  }, []);
 
   return (
     <div className="dashboard">
@@ -27,6 +41,7 @@ export default function Dashboard() {
           <BiPlus />
         </CButton>
       </div>
+
       <section className="flex justify-center">
         <MonthCarousel />
       </section>
@@ -59,7 +74,7 @@ export default function Dashboard() {
           </div>
 
           <div className="col-span-2">
-            <Budget />
+            <TransactionList transactions={transactions} />
           </div>
         </div>
       </section>
