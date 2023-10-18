@@ -13,6 +13,14 @@ const config: Config = {
     "bg-sky-600",
     "bg-green-500",
     "bg-green-600",
+    "col-span-1",
+    "col-span-2",
+    "col-span-3",
+    "col-span-4",
+    "col-span-5",
+    "col-span-6",
+    "col-span-7",
+    "col-span-8",
   ],
   theme: {
     extend: {

@@ -2,11 +2,15 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 /* Instruments */
-import { fetchTransactionsAsync } from "./thunks";
+import {
+  fetchTransactionsAsync,
+  fetchTransactionsByYearAndMonthAsync,
+} from "./thunks";
 import { Transaction } from "@/app/module";
 
 const initialState: TransactionsSliceState = {
-  value: undefined,
+  allTransactions: undefined,
+  transactionByMonthAndYear: undefined,
   status: "idle",
 };
 
@@ -39,13 +43,20 @@ export const transactionsSlice = createSlice({
       })
       .addCase(fetchTransactionsAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.value = action.payload;
-      });
+        state.allTransactions = action.payload;
+      })
+      .addCase(
+        fetchTransactionsByYearAndMonthAsync.fulfilled,
+        (state, action) => {
+          state.transactionByMonthAndYear = action.payload;
+        }
+      );
   },
 });
 
 /* Types */
 export interface TransactionsSliceState {
-  value?: Array<Transaction>;
+  allTransactions?: Array<Transaction>;
+  transactionByMonthAndYear?: Array<Transaction>;
   status: "idle" | "loading" | "failed";
 }

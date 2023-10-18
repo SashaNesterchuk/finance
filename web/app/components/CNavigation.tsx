@@ -21,7 +21,7 @@ export default function CNavigation() {
   };
 
   return (
-    <div className="bg-blue-100 p-5">
+    <div className="bg-sky-200 p-5">
       {navLinks.map((el) => (
         <Link
           key={el.href}

@@ -1,6 +1,9 @@
 /* Instruments */
 import { createAppAsyncThunk } from "@/lib/redux/createAppAsyncThunk";
-import { fetchTransactions } from "./fetchTransactions";
+import {
+  fetchTransactions,
+  getTransactionByMonthAndYear,
+} from "./fetchTransactions";
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -13,6 +16,15 @@ export const fetchTransactionsAsync = createAppAsyncThunk(
     const response = await fetchTransactions();
 
     // The value we return becomes the `fulfilled` action payload
+    return response;
+  }
+);
+
+export const fetchTransactionsByYearAndMonthAsync = createAppAsyncThunk(
+  "transactions/getTransactionByMonthAndYear ",
+  async ({ month, year }: { month: string; year: string }) => {
+    const response = await getTransactionByMonthAndYear(month, year);
+
     return response;
   }
 );

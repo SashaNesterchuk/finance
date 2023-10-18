@@ -1,32 +1,29 @@
 "use client";
-import { useEffect, useState } from "react";
-import { TbCurrencyZloty } from "react-icons/tb";
+import { useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import MonthCarousel from "../components/monthCarousel/MonthCarousel";
 import Budget from "../budget/Budget";
 import CButton from "../components/CButton";
 import CModal from "../components/CModal";
 import TransactionModal from "../budget/TransactionModal";
-import {
-  selectTransactions,
-  useDispatch,
-  useSelector,
-  fetchTransactionsAsync,
-} from "@/lib/redux";
-import TransactionItem from "../transaction/components/TransactionItem";
+import { useSelector, selectTransactionsByMonthAndYear } from "@/lib/redux";
 import TransactionList from "../transaction/components/TransactionList";
+import CCard from "../components/CCard";
+import useFetchDashboard from "../use/useFetchDashboard";
+import MarketplaceChart from "../markeplace/components/MarketplaceChart";
+import { selectMarketplaces } from "@/lib/redux/marketplaces";
+import TypesChart from "../types/components/TypesChart";
+import { selectTypes } from "@/lib/redux/types";
 
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(false);
-  const dispatch = useDispatch();
-  const transactions = useSelector(selectTransactions);
-
-  useEffect(() => {
-    dispatch(fetchTransactionsAsync());
-  }, []);
+  const transactions = useSelector(selectTransactionsByMonthAndYear);
+  const marketplaces = useSelector(selectMarketplaces);
+  const types = useSelector(selectTypes);
+  useFetchDashboard();
 
   return (
-    <div className="dashboard">
+    <div className="dashboard ">
       {/* Move to layout make global */}
       <CModal isActive={isActive} handleClose={() => setIsActive(false)}>
         <TransactionModal />
@@ -46,36 +43,42 @@ export default function Dashboard() {
         <MonthCarousel />
       </section>
 
-      <section className="mt-20">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="p-2 border-2 border-sky-300 rounded-md">
-            <div className="text-center mb-4 text-2xl font-bold">
-              Budget on August
-            </div>
-
+      <section className="mt-20 snap-mandatory snap-y grid gap-4">
+        <div className="grid grid-cols-9 gap-4 snap-start h-screen">
+          <CCard col="2">
             <Budget />
+          </CCard>
 
-            <div className="flex mt-6 justify-between font-bold text-lg px-2">
-              <div className="text-red-500 flex items-center pl-2">
-                5000
-                <TbCurrencyZloty />
-              </div>
-              <div className="flex items-center">
-                AMOUNT: 4000
-                <TbCurrencyZloty />
-              </div>
-            </div>
-
-            <div className="pl-4 mt-2 text-green-500 flex items-center font-bold text-lg">
-              5000
-              <TbCurrencyZloty />
-              <span className="text-base font-normal">- Extra</span>
-            </div>
-          </div>
-
-          <div className="col-span-2">
+          <CCard col="3">
             <TransactionList transactions={transactions} />
-          </div>
+          </CCard>
+
+          <CCard col="4">
+            {!marketplaces || !transactions ? (
+              <div>...Loading</div>
+            ) : (
+              <MarketplaceChart
+                marketplaces={marketplaces}
+                transactions={transactions}
+              />
+            )}
+          </CCard>
+        </div>
+
+        <div className="grid grid-cols-5 gap-4 snap-start h-screen">
+          <CCard col="2">
+            {!marketplaces || !transactions || !types ? (
+              <div>...Loading</div>
+            ) : (
+              <TypesChart
+                marketplaces={marketplaces}
+                transactions={transactions}
+                types={types}
+              />
+            )}
+          </CCard>
+
+          <CCard col="2">test</CCard>
         </div>
       </section>
     </div>

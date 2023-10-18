@@ -6,17 +6,24 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "set DEBUG=express:* & serve",
-    "debug:node": "node ./parser/index.js",
-    "serve": "node index.js"
+    "debug:node": "node index.js",
+    "serve": "NODE_ENV=development nodemon index.js",
+    "seed:all": "npx sequelize-cli db:seed:all",
+    "seed:transactions": "npx sequelize-cli db:seed --seed  20231016182815-transactions.js --debug"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "mysql2": "^3.6.1",
     "node-xlsx": "^0.23.0",
-    "pg": "^8.11.3",
     "sequelize": "^6.33.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "uuid": "^9.0.1"
   }
 }

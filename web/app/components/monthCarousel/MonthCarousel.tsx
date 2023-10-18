@@ -4,24 +4,38 @@ import {
 } from "react-icons/md";
 
 import CButton from "../CButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { monthNames } from "@/app/use/useMonths";
 import MonthDropdown from "./MonthDropdown";
+import {
+  fetchTransactionsByYearAndMonthAsync,
+  useDispatch,
+  useSelector,
+} from "@/lib/redux";
+import { selectActiveMonth } from "@/lib/redux/budget";
+import { budgetSlice } from "../../../lib/redux/budget/budgetSlice";
 
 export default function MonthCarousel() {
-  const [month, setMonth] = useState(new Date().getMonth());
+  const month = useSelector(selectActiveMonth);
+  const dispatch = useDispatch();
 
   const handleClick = (nav: string) => {
     if (nav === "prev") {
-      setMonth((current) =>
-        current - 1 < 0 ? monthNames.length - 1 : current - 1
-      );
+      dispatch(budgetSlice.actions.decrementMonth());
     } else {
-      setMonth((current) =>
-        current + 1 > monthNames.length - 1 ? 0 : current + 1
-      );
+      dispatch(budgetSlice.actions.incrementMonth());
     }
   };
+
+  // useEffect(() => {
+  //   const correctMonth = month.getMonth() + 1;
+  //   dispatch(
+  //     fetchTransactionsByYearAndMonthAsync({
+  //       month: correctMonth.toString(),
+  //       year: "2023",
+  //     })
+  //   );
+  // }, [month, dispatch]);
 
   const handleClickOnMonth = () => {};
 
@@ -30,7 +44,7 @@ export default function MonthCarousel() {
       <CButton circle onClick={() => handleClick("prev")}>
         <MdOutlineArrowBackIosNew />
       </CButton>
-      <MonthDropdown month={month} />
+      <MonthDropdown month={month.getMonth()} />
       <CButton circle onClick={() => handleClick("next")}>
         <MdOutlineArrowForwardIos />
       </CButton>

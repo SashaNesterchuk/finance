@@ -17,7 +17,13 @@ export default function TransactionList(props: Props) {
         transactionsByDate?.map((el) => (
           <div className="flex flex-col gap-1" key={el[0].toString()}>
             <div className="flex gap-4 bg-slate-100 p-2 rounded-md">
-              <div>{el[0].toString()}</div>
+              <div>
+                {new Date(el[0]).toLocaleDateString("en", {
+                  weekday: "long",
+                  day: "numeric",
+                })}
+              </div>
+              <div>number: {el[1].length}</div>
               <div className="text-red-500">
                 -{transactionsAmountInDate[el[0].toString()]}
               </div>

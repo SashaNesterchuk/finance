@@ -21,7 +21,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <CNavigation />
-          <main className="container mx-auto my-5">{children}</main>
+          <main className="flex justify-center bg-sky-100">
+            <div className="container mx-auto py-5">{children}</div>
+          </main>
         </Providers>
       </body>
     </html>
